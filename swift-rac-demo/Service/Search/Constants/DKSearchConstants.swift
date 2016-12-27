@@ -6,6 +6,6 @@
 import Foundation
 
 struct DKSearchConstants {
-    static let mockSearchRequestDelayImitationRange = 0.3...1.0
+    static let mockSearchRequestDelayImitationRange = 2.3...3.5
     static let throttleTimeInterval = 1.0
 }

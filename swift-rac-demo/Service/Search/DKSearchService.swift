@@ -11,6 +11,17 @@ enum RequestError: Error {
     case resultError
 }
 
+extension RequestError {
+    var text: String {
+        switch self {
+        case .inputValueError(let text) :
+            return text
+        case .resultError :
+            return self.localizedDescription
+        }
+    }
+}
+
 typealias DKSearchServiceSignalProducer = SignalProducer<String, RequestError>
 
 protocol DKSearchService {

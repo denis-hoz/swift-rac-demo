@@ -33,8 +33,7 @@ extension DKSearchServiceMock : DKSearchService {
                 observer.send(value: value)
                 observer.sendCompleted()
             case .error(let error):
-//                observer.send(error: error)
-                observer.send(value: "error");
+                observer.send(error: error)
             }
 
         }.delayedByTimeInterval(fromRange: delayRange)
@@ -62,6 +61,10 @@ fileprivate extension DKSearchServiceMock {
 
     func searchResult(withNumericString numericString: String) -> DKSearchServiceResult {
         guard let number = Int(numericString) else {
+            return requestErrorResult(message: tooLongNumberErrorText)
+        }
+        
+        guard number <= Int.max / 2 else {
             return requestErrorResult(message: tooLongNumberErrorText)
         }
 

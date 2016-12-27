@@ -24,6 +24,7 @@ class DKSearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupBindings()
     }
 }
@@ -31,8 +32,7 @@ class DKSearchViewController: UIViewController {
 // MARK: - RAC Bindings
 extension DKSearchViewController {
     func setupBindings() {
-        viewModel.searchText <~ inputTextField.reactive.continuousTextValues.skipNil()
-        
+
         resultLabel.reactive.text <~ viewModel.resultText
         resultLabel.reactive.isHidden <~ viewModel.isSearching
 
@@ -40,9 +40,12 @@ extension DKSearchViewController {
         activityIndicator.reactive.isHidden <~ viewModel.isSearching.map{ !$0 }
 
         cancelButton.reactive.isEnabled <~ viewModel.isSearching
-        retryButton.reactive.isHidden <~ viewModel.searchFailed
-
-//        cancelButton.reactive.pressed = CocoaAction(viewModel.cancelSearch)
+        retryButton.reactive.isHidden <~ viewModel.searchFailed.map{ !$0 }
+        
+        cancelButton.reactive.pressed = CocoaAction(viewModel.cancelSearch)
+        retryButton.reactive.pressed = CocoaAction(viewModel.retrySearch)
+        
+        viewModel.searchText <~ inputTextField.reactive.continuousTextValues.skipNil()
     }
 }
 
