@@ -62,6 +62,14 @@ class DKSearchViewModel {
     func setupSearchProducer() {
         searchProducer = searchText.producer
             .skip(first: 1)
+            .filter { text in
+                if text.isEmpty {
+                    self.completed(withText: "")
+                    self.resetSearchProducer()
+                }
+                
+                return !text.isEmpty
+            }
             .throttle(throttleTimeInterval, on: QueueScheduler.main)
             .on(value: {[unowned self] _ in
                 self.isSearching.value = true
